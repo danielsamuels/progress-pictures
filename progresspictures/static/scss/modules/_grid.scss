@@ -1,0 +1,94 @@
+.image-grid {
+
+    &.category-loading .image-grid__item:not(.loading):not(.loaded)  {
+        opacity: 0;
+    }
+
+    .image-grid__images {
+        position: relative;
+        cursor: pointer;
+        height: rem-calc(348);
+    }
+
+    .image-grid__item {
+        -webkit-transition: all 450ms ease 450ms;
+        margin-bottom: rem-calc(32);
+    }
+
+    .image-grid__item:not(.loading):not(.loaded) .image-grid__images:hover {
+        // The order of the images is from bottom to top, so 1 is at the bottom, 3 is on top.
+
+        .image-grid__image:nth-child(3) {
+            -webkit-transform: rotate(-3deg);
+        }
+
+        .image-grid__image:nth-child(2) {
+            -webkit-transform: rotate(3deg);
+        }
+
+        .image-grid__image:nth-child(1) {
+            -webkit-transform: rotate(9deg);
+        }
+    }
+
+    .image-grid__image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        -webkit-transition: -webkit-transform 250ms ease;
+    }
+
+    .image-grid__item:not(.loaded) .image-grid__image:nth-child(n+4) {
+        opacity: 0;
+    }
+
+    .image-grid__image-overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.75);
+        opacity: 0;
+        pointer-events: none;
+
+        -webkit-transition: opacity 250ms ease;
+
+        &:before {
+            content: " ";
+            display: block;
+            width: 50px;
+            height: 50px;
+
+            margin: 50% auto auto;
+
+            border: 5px dotted #fff;
+            border-radius: 50%;
+            -webkit-animation: rotateSpinner 5s linear infinite;
+        }
+    }
+
+    .loading .image-grid__image-overlay {
+        opacity: 1;
+    }
+
+    .image-grid__header {
+        margin-bottom: rem-calc(18);
+    }
+
+    .header__meta {
+        font-size: rem-calc(14);
+        color: #a2aba5;
+    }
+
+}
+
+
+@-webkit-keyframes rotateSpinner {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}

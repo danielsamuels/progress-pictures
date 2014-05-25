@@ -1,0 +1,63 @@
+{% verbatim %}
+<!DOCTYPE html>
+<html ng-app="progressPicturesApp">
+<head>
+    <title>Progress Pictures</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/screen.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="sticky">
+  <nav class="top-bar" data-topbar data-options="sticky_on: large">
+    <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Progress Pictures</a></h1>
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+  </nav>
+</div>
+
+<div class="row image-grid" >
+    <div class="image-grid__item medium-3 columns" ng-repeat="category in categories">
+        <div class="image-grid__header">
+        <h2 class="header__title"><a href="/category/{{ category.id }}">{{ category.name }}</a></h2>
+            <div class="header__meta row">
+                <div class="medium-6 columns">
+                    <i class="fa fa-camera"></i> {{ category.images.length }} images
+                </div>
+                <div class="medium-6 columns">
+                    <i class="fa fa-clock-o"></i> 10 minutes ago
+                </div>
+            </div>
+        </div>
+        <div class="image-grid__images">
+            <img src="http://lorempixel.com/250/300 " class="image-grid__image" alt="{{ image }}" ng-repeat="image in category.images">
+
+            <div class="image-grid__image-overlay"></div>
+        </div>
+    </div>
+
+    <form ng-submit="createCategory()">
+        <label for="id_name">Name:</label>
+        <input type="text" id="id_name" name="name" ng-model="newCategoryName" />
+        <input type="submit">
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+
+<!-- <script src="/static/js/foundation/foundation.js"></script> -->
+<!-- <script src="/static/js/foundation/foundation.topbar.js"></script> -->
+<!-- <script src="/static/js/modules/module.grid.js"></script> -->
+<script src="/static/js/app.js"></script>
+<script>
+// $(document).foundation();
+</script>
+</body>
+</html>
+{% endverbatim %}
