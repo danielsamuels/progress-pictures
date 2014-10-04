@@ -43,8 +43,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     # Project apps
-    'progresspictures.apps.photos',
-    'progresspictures.apps.site',
+    'progresspictures.apps.images',
     'progresspictures.apps.users',
 )
 
