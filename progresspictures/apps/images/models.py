@@ -32,6 +32,9 @@ class Album(models.Model):
         default=1,
     )
 
+    def __unicode__(self):
+        return self.title
+
 
 class Image(models.Model):
 
@@ -46,13 +49,13 @@ class Image(models.Model):
     # UserPK-AlbumPK-ImagePK -> Hashed
     title = models.CharField(
         max_length=100,
-        blank=True,
-        null=True,
     )
 
     url_title = models.SlugField(
         "URL title",
         max_length=100,
+        blank=True,
+        null=True,
     )
 
     date_added = models.DateTimeField(
@@ -60,6 +63,9 @@ class Image(models.Model):
     )
 
     date_taken = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.title
 
 
 class Data(models.Model):
