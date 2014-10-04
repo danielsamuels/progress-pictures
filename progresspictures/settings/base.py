@@ -13,6 +13,18 @@ from django.core.urlresolvers import reverse_lazy
 
 import os
 
+SITE_DOMAIN = '127.0.0.1:8000'
+SITE_NAME = 'Progress Pictures'
+
+ALLOWED_HOSTS = [
+    SITE_DOMAIN,
+    'www.{}'.format(SITE_DOMAIN)
+]
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': SITE_NAME
+}
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -34,6 +46,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
