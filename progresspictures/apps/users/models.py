@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
+import hashlib
+
 
 class UserManager(BaseUserManager):
     def _create_user(self, email, password, first_name, last_name, is_staff, is_superuser):
@@ -41,12 +43,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=100,
     )
 
-    date_of_birth = models.DateField(
-        help_text='Optional. Your date of birth is used to calculate data such as your expected BMI.',
-        blank=True,
-        null=True,
-    )
-
     is_staff = models.BooleanField(
         'staff status',
         default=False,
@@ -78,8 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.first_name
         )
 
+    def image(self):
+        return "http://www.gravatar.com/avatar/{}?s=40".format(hashlib.md5(self.user.email).hexdigest())
+
     def __unicode__(self):
-        return u'{} {}'.format(
-            self.first_name,
-            self.last_name
-        )
+        return self.get_full_name()
