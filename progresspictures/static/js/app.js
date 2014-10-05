@@ -10,6 +10,13 @@ progressPicturesApp.filter('fromNow', function() {
     }
 });
 
+progressPicturesApp.factory('MenuButton', function(){
+    return {
+        href: '#',
+        text: ''
+    };
+});
+
 progressPicturesApp.config(['$httpProvider', '$routeProvider', '$locationProvider', function($httpProvider, $routeProvider, $locationProvider) {
     // Send the CSRF token with POST requests.
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -36,9 +43,15 @@ progressPicturesApp.config(['$httpProvider', '$routeProvider', '$locationProvide
 }]);
 
 
+progressPicturesApp.controller('PageCtrl', ['$scope', 'MenuButton', function($scope, MenuButton) {
+    console.log('PageCtrl')
+    $scope.menu = MenuButton;
+}]);
+
+
 progressPicturesApp.controller('AlbumListingCtrl', ['$scope', '$http', function($scope, $http) {
     console.log('AlbumListingCtrl');
-    $scope.viewClass = 'album-listing';
+    $scope.menu.text = 'Add album';
 
     $scope.loadAlbums = function() {
         $http.get('/api/album/').then(function (response) {
@@ -60,7 +73,7 @@ progressPicturesApp.controller('AlbumListingCtrl', ['$scope', '$http', function(
 
 progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', function($scope, $http, $routeParams, $upload) {
     console.log('AlbumDetailCtrl');
-    $scope.viewClass = 'album-detail';
+    $scope.menu.text = 'Upload image';
 
     $scope.loadImages = function() {
         $http.get('/api/album/' + $routeParams.pk + '/').then(function (response) {
