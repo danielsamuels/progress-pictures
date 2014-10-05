@@ -24,6 +24,11 @@ class Album(models.Model):
         default=1,
     )
 
+    def get_absolute_url(self):
+        return '/album/{}/'.format(
+            self.pk,
+        )
+
     def __unicode__(self):
         return self.title
 
@@ -38,23 +43,24 @@ class Image(models.Model):
         upload_to='uploads/files'
     )
 
-    # UserPK-AlbumPK-ImagePK -> Hashed
     title = models.CharField(
         max_length=100,
-    )
-
-    url_title = models.SlugField(
-        "URL title",
-        max_length=100,
-        blank=True,
-        null=True,
     )
 
     date_added = models.DateTimeField(
         auto_now_add=True,
     )
 
-    date_taken = models.DateTimeField()
+    date_taken = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    def get_absolute_url(self):
+        return '{}image/{}'.format(
+            self.album.get_absolute_url(),
+            self.pk
+        )
 
     def __unicode__(self):
         return self.title
