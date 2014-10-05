@@ -1,0 +1,33 @@
+<div class="row image-grid" >
+    <div class="image-grid__item medium-3 columns" ng-repeat="album in albums">
+        <div class="image-grid__header">
+        <h2 class="header__title">
+            <a href="{{ album.url }}">{{ album.title }}</a>
+        </h2>
+            <div class="header__meta row">
+                <div class="medium-5 columns">
+                    <i class="fa fa-camera"></i>
+                    {{ album.image_set.length }}
+                    <ng-pluralize count="album.image_set.length" when="{'one': 'image', 'other': 'images'}"></ng-pluralize>
+                </div>
+                <div class="medium-7 columns text-right">
+                    <i class="fa fa-clock-o"></i>
+                    {{ album.date_added | fromNow }}
+                </div>
+            </div>
+        </div>
+        <a href="{{ album.url }}" class="image-grid__images">
+            <img ng-src="/media/{{ image.file }}" class="image-grid__image" alt="{{ image }}" ng-repeat="image in album.image_set|limitTo:3">
+            <img src="http://placehold.it/290x348&amp;text=No%20images%20here!" alt="" ng-show="!album.image_set.length">
+
+            <div class="image-grid__image-overlay"></div>
+        </a>
+    </div>
+
+    <form ng-submit="createAlbum()">
+        <h2>New album</h2>
+        <label for="id_title">Title:</label>
+        <input type="text" id="id_title" name="title" ng-model="AlbumTitle" />
+        <input type="submit">
+    </form>
+</div>

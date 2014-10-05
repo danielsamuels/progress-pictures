@@ -1,6 +1,8 @@
-{% verbatim %}
+{% load static %}
 <!DOCTYPE html>
-<html ng-app="progressPicturesApp">
+<html ng-app="progressPicturesApp" flow-init
+      flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]"
+      flow-files-submitted="$flow.upload()">
 <head>
     <title>Progress Pictures</title>
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
@@ -12,7 +14,7 @@
   <nav class="top-bar" data-topbar data-options="sticky_on: large">
     <ul class="title-area">
         <li class="name">
-          <h1><a href="#">Progress Pictures</a></h1>
+          <h1><a href="/">Progress Pictures</a></h1>
         </li>
          <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
         <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -20,14 +22,16 @@
   </nav>
 </div>
 
-<div ng-controller="MainCtrl">
-    <div class="view-container" ng-view></div>
+<div class="view-container {{ viewClass }}" ng-view>
+    Loading..
 </div>
 
-
+<script src="{% static 'js/modules/angular/angular-file-upload-shim.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+<script src="{% static 'js/modules/angular/angular-file-upload.js' %}"></script>
+<script src="{% static 'js/libraries/moment.js' %}"></script>
 
 <script src="/static/js/app.js"></script>
 <script>
@@ -35,4 +39,3 @@
 </script>
 </body>
 </html>
-{% endverbatim %}
