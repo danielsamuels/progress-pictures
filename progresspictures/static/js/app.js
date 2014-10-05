@@ -120,29 +120,3 @@ progressPicturesApp.controller('ImageDetailCtrl', ['$scope', '$http', '$routePar
         $scope.album = response.data;
     });
 }]);
-
-// progressPicturesApp.controller('categoryListing', function($scope, $http, $cookies) {
-//     $scope.loadCategories = function() {
-//         $http.get('/api/category/').then( function (response) {
-//             console.debug(response);
-//             $scope.categories = response.data;
-//         });
-//     }
-
-//     $scope.createCategory = function() {
-//         $http.post('/api/category/', {
-//             'name': this.newCategoryName,
-//         }).then(function(response) {
-//             $scope.loadCategories();
-//         });
-//     }
-
-//     // Initialise values on elements.
-//     $scope.newCategoryName = 'New category'
-
-//     $scope.loadCategories();
-// });
-
-// progressPicturesApp.controller('categoryDetail', function($scope) {
-//     $scope.pageClass = 'index';
-// });
