@@ -12,14 +12,6 @@ class Album(models.Model):
         max_length=100,
     )
 
-    # UserPK-AlbumPK -> Hashed
-    url_title = models.SlugField(
-        "URL title",
-        max_length=100,
-        blank=True,
-        null=True,
-    )
-
     date_added = models.DateTimeField(
         auto_now_add=True,
     )
