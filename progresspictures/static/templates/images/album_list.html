@@ -17,7 +17,7 @@
             </div>
         </div>
         <a href="{{ album.url }}" class="image-grid__images">
-            <img ng-src="/media/{{ image.file }}" class="image-grid__image" alt="{{ image }}" ng-repeat="image in album.image_set|limitTo:3">
+            <img ng-src="/media/{{ image.file }}" ng-class="{'image-grid__image': album.image_set.length > 1}" alt="{{ image }}" ng-repeat="image in album.image_set|limitTo:3">
             <img src="http://placehold.it/290x348&amp;text=No%20images%20here!" alt="" ng-show="!album.image_set.length">
 
             <div class="image-grid__image-overlay"></div>
