@@ -3543,28 +3543,29 @@ th.hide-for-touch {
 }
 /* line 7, ../scss/modules/_grid.scss */
 .image-grid .image-grid__images {
+  display: block;
   position: relative;
   cursor: pointer;
   height: 21.75rem;
 }
-/* line 13, ../scss/modules/_grid.scss */
+/* line 14, ../scss/modules/_grid.scss */
 .image-grid .image-grid__item {
   -webkit-transition: all 450ms ease 450ms;
   margin-bottom: 2rem;
 }
-/* line 21, ../scss/modules/_grid.scss */
+/* line 22, ../scss/modules/_grid.scss */
 .image-grid .image-grid__item:not(.loading):not(.loaded) .image-grid__images:hover .image-grid__image:nth-child(3) {
   -webkit-transform: rotate(-3deg);
 }
-/* line 25, ../scss/modules/_grid.scss */
+/* line 26, ../scss/modules/_grid.scss */
 .image-grid .image-grid__item:not(.loading):not(.loaded) .image-grid__images:hover .image-grid__image:nth-child(2) {
   -webkit-transform: rotate(3deg);
 }
-/* line 29, ../scss/modules/_grid.scss */
+/* line 30, ../scss/modules/_grid.scss */
 .image-grid .image-grid__item:not(.loading):not(.loaded) .image-grid__images:hover .image-grid__image:nth-child(1) {
   -webkit-transform: rotate(9deg);
 }
-/* line 34, ../scss/modules/_grid.scss */
+/* line 35, ../scss/modules/_grid.scss */
 .image-grid .image-grid__image {
   position: absolute;
   top: 0;
@@ -3572,11 +3573,11 @@ th.hide-for-touch {
   width: 100%;
   -webkit-transition: -webkit-transform 250ms ease;
 }
-/* line 43, ../scss/modules/_grid.scss */
+/* line 44, ../scss/modules/_grid.scss */
 .image-grid .image-grid__item:not(.loaded) .image-grid__image:nth-child(n+4) {
   opacity: 0;
 }
-/* line 47, ../scss/modules/_grid.scss */
+/* line 48, ../scss/modules/_grid.scss */
 .image-grid .image-grid__image-overlay {
   position: absolute;
   width: 100%;
@@ -3586,7 +3587,7 @@ th.hide-for-touch {
   pointer-events: none;
   -webkit-transition: opacity 250ms ease;
 }
-/* line 57, ../scss/modules/_grid.scss */
+/* line 58, ../scss/modules/_grid.scss */
 .image-grid .image-grid__image-overlay:before {
   content: " ";
   display: block;
@@ -3597,27 +3598,27 @@ th.hide-for-touch {
   border-radius: 50%;
   -webkit-animation: rotateSpinner 5s linear infinite;
 }
-/* line 71, ../scss/modules/_grid.scss */
+/* line 72, ../scss/modules/_grid.scss */
 .image-grid .loading .image-grid__image-overlay {
   opacity: 1;
 }
-/* line 75, ../scss/modules/_grid.scss */
+/* line 76, ../scss/modules/_grid.scss */
 .image-grid .image-grid__header {
   margin-bottom: 1.125rem;
 }
-/* line 79, ../scss/modules/_grid.scss */
+/* line 80, ../scss/modules/_grid.scss */
 .image-grid .header__meta {
   font-size: 0.875rem;
   color: #a2aba5;
 }
 
 @-webkit-keyframes rotateSpinner {
-  /* line 88, ../scss/modules/_grid.scss */
+  /* line 89, ../scss/modules/_grid.scss */
   from {
     -webkit-transform: rotate(0deg);
   }
 
-  /* line 91, ../scss/modules/_grid.scss */
+  /* line 92, ../scss/modules/_grid.scss */
   to {
     -webkit-transform: rotate(360deg);
   }

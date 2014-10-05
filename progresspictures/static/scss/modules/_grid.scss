@@ -5,6 +5,7 @@
     }
 
     .image-grid__images {
+        display: block;
         position: relative;
         cursor: pointer;
         height: rem-calc(348);
