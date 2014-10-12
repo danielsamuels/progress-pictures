@@ -7,45 +7,64 @@
     <link rel="stylesheet" type="text/css" href="/static/css/screen.css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body ng-controller="PageCtrl">
+<body ng-controller="PageCtrl" ng-init="user='{{ user.email }}'">
 
-<div class="sticky">
-    <nav class="top-bar">
-        <ul class="title-area">
-            <li class="name">
-                <h1><a href="/">Progress Pictures</a></h1>
-            </li>
-            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-            <li class="toggle-topbar menu-icon">
-                <a href="#"><span>Menu</span></a>
-            </li>
-        </ul>
-
-        <section class="top-bar-section">
-            <!-- Right Nav Section -->
-            <ul class="right">
-                <li class="active">
-                    <a class="menu-button" ng-href="menu.href" ng-bind="menu.text">Loading..</a>
+    <div class="sticky">
+        <nav class="top-bar">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="/">Progress Pictures</a></h1>
+                </li>
+                <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                <li class="toggle-topbar menu-icon">
+                    <a href="#"><span>Menu</span></a>
                 </li>
             </ul>
-        </section>
-    </nav>
-</div>
 
-<div class="view-container {{ viewClass }}" ng-view>
-    Loading..
-</div>
+            <form method="post" action="#" ng-submit="login()" class="top-bar-section">
+                {% csrf_token %}
+                <!-- Right Nav Section -->
+                <ul class="right" ng-hide="user">
+                    <li class="has-form">
+                        <div class="row collapse">
+                            <div class="large-6 columns">
+                                <input type="email" name="email" placeholder="Email address" ng-model="loginForm.email">
+                            </div>
+                            <div class="large-6 columns">
+                                <input type="password" name="password" placeholder="Password" ng-model="loginForm.password">
+                            </div>
+                        </div>
+                    </li>
 
-<script src="{% static 'js/modules/angular/angular-file-upload-shim.js' %}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
-<script src="{% static 'js/modules/angular/angular-file-upload.js' %}"></script>
-<script src="{% static 'js/libraries/moment.js' %}"></script>
+                    <li class="divider"></li>
+                    <li><a ng-click="login();">Login</a></li>
+                    <li class="divider"></li>
+                    <li><a ng-click="register();">Register</a></li>
+                    <li class="divider"></li>
+                </ul>
 
-<script src="/static/js/app.js"></script>
-<script>
-// $(document).foundation();
-</script>
+                <ul class="right" ng-show="user">
+                    {# <li><a ng-href="menu.href" ng-bind="menu.text">Loading..</a></li> #}
+                    <li><a ng-click="open()" ng-show="showUploadImageButton()">Upload image</a></li>
+                    <li><a ng-click="logout();">Logout</a></li>
+                </ul>
+            </form>
+        </nav>
+    </div>
+
+    <div class="view-container {{ viewClass }}" ng-view>
+        Loading..
+    </div>
+
+    <script src="{% static 'js/modules/angular/angular-file-upload-shim.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
+    <script src="{% static 'js/modules/angular/angular-file-upload.js' %}"></script>
+    <script src="{% static 'js/libraries/moment.js' %}"></script>
+    <script src="{% static 'js/modules/angular/mm-foundation-0.3.1.js' %}"></script>
+
+    <script src="/static/js/app.js"></script>
 </body>
 </html>
