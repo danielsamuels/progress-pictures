@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         )
 
     def image(self):
-        return "http://www.gravatar.com/avatar/{}?s=40".format(hashlib.md5(self.user.email).hexdigest())
+        return "http://www.gravatar.com/avatar/{}?s=40".format(hashlib.md5(self.email).hexdigest())
 
     def __unicode__(self):
         return self.get_full_name()

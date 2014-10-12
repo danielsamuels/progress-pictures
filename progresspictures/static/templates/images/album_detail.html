@@ -12,6 +12,10 @@
         </a>
     </div>
 
+
+</div>
+
+ <script type="text/ng-template" id="myModalContent.html">
     <form enctype="multipart/form-data" name="imageUpload" class="medium-3 columns end">
         <label for="id_title">Title:</label>
         <input type="text" id="id_title" name="title" ng-model="ImageTitle" required />
@@ -19,4 +23,4 @@
         <br><br>
         <input type="file" ng-model="ImageFile" name="file" ng-file-select="onFileSelect($files)" accept="image/*">
     </form>
-</div>
+  </script>

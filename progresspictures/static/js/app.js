@@ -2,7 +2,7 @@
 // Dependancies:
 //  - ngCookies: Used to get the CSRF cookie.
 
-var progressPicturesApp = angular.module('progressPicturesApp', ['ngCookies', 'ngRoute', 'angularFileUpload', 'ngResource']);
+var progressPicturesApp = angular.module('progressPicturesApp', ['ngCookies', 'ngRoute', 'angularFileUpload', 'ngResource', 'mm.foundation']);
 
 progressPicturesApp.filter('fromNow', function() {
     return function(date) {
@@ -70,16 +70,21 @@ progressPicturesApp.config(['$httpProvider', '$routeProvider', '$locationProvide
 
     // Build URLs.
     $routeProvider
+
+    // Album listing
     .when('/', {
         templateUrl: '/static/templates/images/album_list.html',
         controller: 'AlbumListingCtrl'
     })
 
+    // Album detail
     .when('/album/:pk/', {
         templateUrl: '/static/templates/images/album_detail.html',
-        controller: 'AlbumDetailCtrl'
+        controller: 'AlbumDetailCtrl',
+        controllerAs: 'albumdetail'
     })
 
+    // Image detail
     .when('/album/:album_pk/image/:image_pk', {
         templateUrl: '/static/templates/images/image_detail.html',
         controller: 'ImageDetailCtrl'
@@ -87,44 +92,79 @@ progressPicturesApp.config(['$httpProvider', '$routeProvider', '$locationProvide
 }]);
 
 
-progressPicturesApp.controller('PageCtrl', ['$scope', 'MenuButton', function($scope, MenuButton) {
+progressPicturesApp.controller('PageCtrl', ['$scope', '$location', '$route', '$rootScope', 'MenuButton', 'api', function($scope, $location, $route, $rootScope, MenuButton, api) {
     console.log('PageCtrl')
     $scope.menu = MenuButton;
-}]);
 
+    $scope.loginForm = {
+        email: '',
+        password: ''
+    }
 
-progressPicturesApp.controller('AlbumListingCtrl', ['$scope', '$http', function($scope, $http) {
-    console.log('AlbumListingCtrl');
-    $scope.menu.text = 'Add album';
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+        console.log('event', event);
+        console.log('toState', toState);
+        console.log('toParams', toParams);
+        console.log('fromState', fromState);
+        console.log('fromParams', fromParams);
+    });
 
-    $scope.loadAlbums = function() {
-        $http.get('/api/album/').then(function (response) {
-            console.log(response);
-            $scope.albums = response.data;
-        });
+    $scope.showUploadImageButton = function() {
+        if (undefined === $route.current || undefined === $route.current.scope) {
+            return false;
+        }
+
+        return $route.current.scope.name == 'AlbumDetailCtrl'
     };
 
-    $scope.createAlbum = function() {
-        $http.post('/api/album/', {
-            'title': this.AlbumTitle,
-        }).then(function(response) {
-            $scope.loadAlbums();
-        });
-    }
+    $scope.login = function(){
+        console.log('Login trigger.');
 
-    $scope.loadAlbums();
+        if ( ! $scope.loginForm.email || ! $scope.loginForm.password) {
+            return;
+        }
+
+        api.auth.login($scope.loginForm).
+            $promise.
+                then(function(data){
+                    // on good email and password
+                    $scope.user = data.email;
+                }).
+                catch(function(data){
+                    // on incorrect email and password
+                    console.error('Unable to login.');
+                });
+        };
 }]);
 
-progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', function($scope, $http, $routeParams, $upload) {
-    console.log('AlbumDetailCtrl');
-    $scope.menu.text = 'Upload image';
 
-    $scope.loadImages = function() {
-        $http.get('/api/album/' + $routeParams.pk + '/').then(function (response) {
-            console.log(response);
-            $scope.album = response.data;
+progressPicturesApp.controller('AlbumListingCtrl', ['$scope', '$http', 'api', function($scope, $http, api) {
+    console.log('AlbumListingCtrl');
+    $scope.name = 'AlbumListingCtrl';
+    $scope.menu.text = 'Add album';
+    $scope.albums = api.albums.list();
+
+    $scope.createAlbum = function() {
+        api.albums.create({
+            'title': $scope.AlbumTitle,
+        }).$promise.then(function(data) {
+            console.log(data);
+            $scope.AlbumTitle = '';
+            $scope.albums = api.albums.list();
+        }).catch(function(data) {
+            console.error(data);
         });
-    }
+    };
+}]);
+
+
+progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'api', function($scope, $http, $routeParams, $upload, $modal, api) {
+    console.log('AlbumDetailCtrl');
+    $scope.name = 'AlbumDetailCtrl';
+    $scope.menu.text = 'Upload image';
+    $scope.album = api.images.list({
+        albumID: $routeParams.pk
+    });
 
     $scope.onFileSelect = function($files) {
         for (var i = 0; i < $files.length; i++) {
@@ -139,10 +179,12 @@ progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routePar
                 },
                 file: file,
             }).success(function(data, status, headers, config) {
-                $scope.loadImages();
+                $scope.album = api.images.list({
+                    albumID: $routeParams.pk
+                });
 
                 angular.forEach(
-                    document.querySelectorAll('input'),
+                    document.querySelectorAll('.view-container input'),
                     function(inputElem) {
                         angular.element(inputElem).val(null);
                     }
@@ -151,16 +193,56 @@ progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routePar
         }
     };
 
-    $scope.loadImages();
+
+    $scope.items = ['item1', 'item2', 'item3'];
+
+    $scope.open = function () {
+        console.log('open');
+
+        var modalInstance = $modal.open({
+            templateUrl: 'myModalContent.html',
+            controller: ModalInstanceCtrl,
+            resolve: {
+                items: function () {
+                    return $scope.items;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    // $scope.loadImages();
 }]);
 
 
 progressPicturesApp.controller('ImageDetailCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     console.log('ImageDetailCtrl');
-    $scope.viewClass = 'image-detail';
+    $scope.name = 'ImageDetailCtrl';
 
     $http.get('/api/image/' + $routeParams.image_pk + '/').then(function (response) {
         console.log(response);
         $scope.album = response.data;
     });
 }]);
+
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items[0]
+  };
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
