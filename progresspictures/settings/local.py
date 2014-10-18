@@ -17,6 +17,10 @@ EMAIL_HOST_PASSWORD = '9d303879d1f016'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
 
+
+
+DATABASES['default']['PASSWORD'] = '123456'
+
 # Save media files to the user's Sites folder.
 
 MEDIA_ROOT = os.path.expanduser("~/Sites/personal/progresspictures/media")
