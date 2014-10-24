@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/screen.css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <base href="/"/>
 </head>
 <body ng-controller="PageCtrl" ng-init="user='{{ user.email }}'">
 
@@ -44,7 +45,6 @@
                 </ul>
 
                 <ul class="right" ng-show="user">
-                    {# <li><a ng-href="menu.href" ng-bind="menu.text">Loading..</a></li> #}
                     <li><a ng-click="albumdetail.open()" ng-show="showUploadImageButton()">Upload image</a></li>
                     <li><a ng-click="logout();">Logout</a></li>
                 </ul>
@@ -56,14 +56,14 @@
         Loading..
     </div>
 
-    <script src="{% static 'js/modules/angular/angular-file-upload-shim.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-resource.js"></script>
-    <script src="{% static 'js/modules/angular/angular-file-upload.js' %}"></script>
-    <script src="{% static 'js/libraries/moment.js' %}"></script>
-    <script src="{% static 'js/modules/angular/mm-foundation-0.3.1.js' %}"></script>
+    <script src="{% static 'js/dependencies/modules/angular/angular-file-upload-shim.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-resource.js"></script>
+    <script src="{% static 'js/dependencies/modules/angular/angular-file-upload.js' %}"></script>
+    <script src="{% static 'js/dependencies/libraries/moment.js' %}"></script>
+    <script src="{% static 'js/dependencies/modules/angular/mm-foundation-0.3.1.js' %}"></script>
 
     <script src="/static/js/app.js"></script>
 </body>

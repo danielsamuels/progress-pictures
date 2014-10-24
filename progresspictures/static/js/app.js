@@ -73,20 +73,20 @@ progressPicturesApp.config(['$httpProvider', '$routeProvider', '$locationProvide
 
     // Album listing
     .when('/', {
-        templateUrl: '/static/templates/images/album_list.html',
+        templateUrl: '/static/partials/images/album_list.html',
         controller: 'AlbumListingCtrl'
     })
 
     // Album detail
     .when('/album/:pk/', {
-        templateUrl: '/static/templates/images/album_detail.html',
+        templateUrl: '/static/partials/images/album_detail.html',
         controller: 'AlbumDetailCtrl',
         controllerAs: 'albumdetail'
     })
 
     // Image detail
     .when('/album/:album_pk/image/:image_pk', {
-        templateUrl: '/static/templates/images/image_detail.html',
+        templateUrl: '/static/partials/images/image_detail.html',
         controller: 'ImageDetailCtrl'
     });
 }]);
