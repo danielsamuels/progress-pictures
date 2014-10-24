@@ -1,7 +1,16 @@
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit">
-</form>
+<div class="row">
+    <div class="large-6 large-centered columns">
+        <form method="post" ng-submit="login()">
+            <h1>Log in to MyProgressPics</h1>
+            <label for="email">Email address:</label>
+            <input id="email" type="email">
 
-<p>Don't have an account? <a href="{% url 'auth:register' %}">Register.</a></p>
+            <label for="password">Password:</label>
+            <input id="password" type="password">
+
+            <input type="submit">
+        </form>
+
+        <p>Don't have an account? <a href="/auth/register/">Register.</a></p>
+    </div>
+</div>

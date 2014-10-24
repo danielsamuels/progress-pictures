@@ -25,7 +25,6 @@ SUIT_CONFIG = {
     'ADMIN_NAME': SITE_NAME
 }
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -54,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'compressor',
 
     # Project apps
     'progresspictures.apps.images',
@@ -116,6 +116,12 @@ STATIC_ROOT = "/home/progresspictures/webapps/progresspictures_static"
 
 STATIC_URL = "/static/"
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 # Absolute path to the directory where all uploaded media files are stored.
 
