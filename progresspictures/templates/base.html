@@ -27,9 +27,7 @@
                 <!-- Right Nav Section -->
                 <ul class="right" ng-show="!user">
                     <li class="divider"></li>
-                    <li><a href="/auth/login/">Login</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/auth/register/">Register</a></li>
+                    <li><a href="/auth/">Login / Register</a></li>
                     <li class="divider"></li>
                 </ul>
 
@@ -75,5 +73,7 @@
     <script src="{% static 'js/apps/site/config.js' %}"></script>
     <script src="{% static 'js/apps/site/controllers.js' %}"></script>
     {% endcompress %}
+
+    <div style="display: none;">{% csrf_token %}</div>
 </body>
 </html>

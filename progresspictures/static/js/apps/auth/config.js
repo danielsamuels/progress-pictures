@@ -3,13 +3,8 @@ progressPicturesApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
 
         // Album listing
-        .when('/auth/login/', {
-            templateUrl: '/static/partials/auth/login.html',
-            controller: 'LoginCtrl'
-        })
-
-        .when('/auth/register/', {
-            templateUrl: '/static/partials/auth/register.html',
-            controller: 'RegisterCtrl'
+        .when('/auth/', {
+            templateUrl: '/static/partials/auth/landing.html',
+            controller: 'AuthCtrl'
         });
 }]);

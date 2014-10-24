@@ -1,31 +1,25 @@
 /*global progressPicturesApp*/
-progressPicturesApp.controller('LoginCtrl', ['$scope', '$location', '$route', '$rootScope', 'api', function ($scope, $location, $route, $rootScope, api) {
-    console.log('LoginCtrl');
+progressPicturesApp.controller('AuthCtrl', ['$scope', '$location', 'auth', function ($scope, $location, auth) {
+    console.log('AuthCtrl');
 
     $scope.login = function () {
         console.log('Login trigger.');
 
-        if (!$scope.loginForm.email || !$scope.loginForm.password) {
+        if (!$scope.email || !$scope.password) {
+            console.log('No username and/or password');
             return;
         }
 
-        api.auth.login($scope.loginForm).
-            $promise.
-            then(function (data) {
-                // on good email and password
-                $scope.user = data.email;
-            }).
-            catch(function (data) {
-                // on incorrect email and password
-                console.error('Unable to login.');
-            });
-    };
-}]);
-
-progressPicturesApp.controller('RegisterCtrl', ['$scope', '$location', '$route', '$rootScope', 'api', function ($scope, $location, $route, $rootScope, api) {
-    console.log('RegisterCtrl');
-
-    $scope.register = function () {
-        console.log('Register', $scope.email, $scope.password);
+        auth.login({
+            email: $scope.email,
+            password: $scope.password
+        }).success(function (data) {
+            console.log('login success', data);
+            $location.path('/albums/');
+        }).error(function (data, status) {
+            if (status == 401) {
+                console.log('login error', data);
+            }
+        });
     };
 }]);

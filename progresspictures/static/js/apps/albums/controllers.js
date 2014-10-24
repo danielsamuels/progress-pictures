@@ -1,30 +1,23 @@
-progressPicturesApp.controller('AlbumListingCtrl', ['$scope', '$http', 'api', function($scope, $http, api) {
+progressPicturesApp.controller('AlbumListingCtrl', ['$scope', 'albumFactory', 'albums', function($scope, albumFactory, albums) {
     console.log('AlbumListingCtrl');
-    $scope.name = 'AlbumListingCtrl';
-    $scope.menu.text = 'Add album';
-    $scope.albums = api.albums.list();
+    $scope.albums = albums.data;
 
     $scope.createAlbum = function() {
-        api.albums.create({
+        // Create returns a list() promise.
+        albumFactory.create({
             'title': $scope.AlbumTitle,
-        }).$promise.then(function(data) {
+        }).success(function(data) {
             console.log(data);
             $scope.AlbumTitle = '';
-            $scope.albums = api.albums.list();
-        }).catch(function(data) {
-            console.error(data);
+            $scope.albums = data;
         });
     };
 }]);
 
 
-progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'api', function($scope, $http, $routeParams, $upload, $modal, api) {
+progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'album', function($scope, $http, $routeParams, $upload, $modal, album) {
     console.log('AlbumDetailCtrl');
-    $scope.name = 'AlbumDetailCtrl';
-    $scope.menu.text = 'Upload image';
-    $scope.album = api.images.list({
-        albumID: $routeParams.pk
-    });
+    $scope.album = album.data;
 
     $scope.onFileSelect = function($files) {
         for (var i = 0; i < $files.length; i++) {
@@ -53,9 +46,6 @@ progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routePar
         }
     };
 
-
-    $scope.items = ['item1', 'item2', 'item3'];
-
     $scope.open = function () {
         console.log('open');
 
@@ -75,8 +65,6 @@ progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routePar
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
-
-    // $scope.loadImages();
 }]);
 
 

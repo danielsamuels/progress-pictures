@@ -7,8 +7,8 @@ progressPicturesApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: '/static/partials/images/album_list.html',
             controller: 'AlbumListingCtrl',
             resolve: {
-                album: [function () {
-                    return {};
+                albums: ['albumFactory', function (albumFactory) {
+                    return albumFactory.list();
                 }]
             }
         })
@@ -17,7 +17,12 @@ progressPicturesApp.config(['$routeProvider', function ($routeProvider) {
         .when('/album/:pk/', {
             templateUrl: '/static/partials/images/album_detail.html',
             controller: 'AlbumDetailCtrl',
-            controllerAs: 'albumdetail'
+            controllerAs: 'albumdetail',
+            resolve: {
+                album: ['$route', 'albumFactory', function ($route, albumFactory) {
+                    return albumFactory.detail($route.current.params.pk);
+                }]
+            }
         })
 
         // Image detail

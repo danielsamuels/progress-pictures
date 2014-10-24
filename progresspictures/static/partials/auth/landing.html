@@ -2,15 +2,16 @@
     <div class="large-6 large-centered columns">
         <form method="post" ng-submit="login()">
             <h1>Log in to MyProgressPics</h1>
+            <p>Don't have an account? We'll create one automatically, just enter your email address and a password.</p>
+
             <label for="email">Email address:</label>
-            <input id="email" type="email">
+            <input id="email" type="email" ng-model="email">
 
             <label for="password">Password:</label>
-            <input id="password" type="password">
+            <input id="password" type="password" ng-model="password">
 
             <input type="submit">
         </form>
 
-        <p>Don't have an account? <a href="/auth/register/">Register.</a></p>
     </div>
 </div>

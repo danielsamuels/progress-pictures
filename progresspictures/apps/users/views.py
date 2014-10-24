@@ -1,6 +1,7 @@
-from django.contrib.auth import authenticate, login as django_login, logout as django_logout
+from django.contrib.auth import authenticate, login as django_login, logout as django_logout, \
+    get_user_model
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.shortcuts import redirect
 from django.views.generic import View
 
@@ -16,49 +17,39 @@ import json
 class AuthView(View):
 
     def post(self, request, *args, **kwargs):
-        if 'HTTP_AUTHORIZATION' in request.META:
-            email, password = request.META['HTTP_AUTHORIZATION'].split(':')
+        post_data = json.loads(request.body)
+        email = post_data.get('email')
+        password = post_data.get('password')
+        status = None
 
-            user = authenticate(username=email, password=password)
+        # Check to see if a User exists with the email address, if it doesn't,
+        # then we'll register it right here.
+        UserModel = get_user_model()
+        try:
+            user = UserModel._default_manager.get_by_natural_key(email)
+            status = 'existed'
+        except UserModel.DoesNotExist:
+            # Create the user.
+            user = UserModel(email=email)
+            user.set_password(password)
+            user.save()
+            status = 'created'
 
-            if user is not None:
-                if user.is_active:
-                    django_login(request, user)
-                    request.user = user
+        user = authenticate(username=email, password=password)
 
-                    # Once we have logged the user in return the serialized response
-                    serializer = UserSerializer(request.user, context={'request': request})
-                    return JSONResponse(serializer.data)
+        if user is not None:
+            if user.is_active:
+                django_login(request, user)
+                request.user = user
+
+                # Once we have logged the user in return the serialized response
+                serializer = UserSerializer(request.user, context={'request': request})
+                serializer.data['status'] = status
+                return JSONResponse(serializer.data)
 
         # They did not provide basic authentication
         response = HttpResponse()
         response.status_code = 401
-        return response
-
-    def put(self, request, *args, **kwargs):
-        data = json.loads(request.raw_post_data)
-        user = User(**data)
-        user.set_password(data['password'])
-
-        try:
-            user.save()
-            user = authenticate(username=data['email'], password=data['password'])
-            if user is not None:
-                if user.is_active:
-                    django_login(request, user)
-                    request.user = user
-
-                    # Once we have logged the user in return the serialized response
-                    serializer = UserSerializer(request.user)
-                    response = JSONResponse(serializer.data)
-                    response.status_code = 201
-                    return response
-
-        except IntegrityError:
-            pass
-
-        response = HttpResponse()
-        response.status_code = 409
         return response
 
     def delete(self, request, *args, **kwargs):
