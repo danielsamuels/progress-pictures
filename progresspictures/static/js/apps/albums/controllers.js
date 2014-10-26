@@ -1,9 +1,7 @@
 progressPicturesApp.controller('AlbumListingCtrl', ['$scope', 'albumFactory', 'menuControl', 'albums', function($scope, albumFactory, menuControl, albums) {
     console.log('AlbumListingCtrl');
     albumFactory.setAlbums(albums.data);
-    menuControl.showCreateAlbum();
-    menuControl.hideUploadImage();
-    menuControl.hideDeleteAlbum();
+    menuControl.show(['CreateAlbum']);
 
     $scope.$watch(function() {
         return albumFactory.getAlbums();
@@ -52,9 +50,7 @@ progressPicturesApp.controller('albumDeleteModalCtrl', ['$scope', '$modalInstanc
 progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'menuControl', 'album', function($scope, $http, $routeParams, $upload, $modal, menuControl, album) {
     console.log('AlbumDetailCtrl');
     $scope.album = album.data;
-    menuControl.hideCreateAlbum();
-    menuControl.showUploadImage();
-    menuControl.showDeleteAlbum();
+    menuControl.show(['UploadImage', 'DeleteAlbum']);
 
     $scope.onFileSelect = function($files) {
         for (var i = 0; i < $files.length; i++) {
@@ -105,12 +101,8 @@ progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routePar
 }]);
 
 
-progressPicturesApp.controller('ImageDetailCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+progressPicturesApp.controller('ImageDetailCtrl', ['$scope', 'image', 'menuControl', function($scope, image, menuControl) {
     console.log('ImageDetailCtrl');
-    $scope.name = 'ImageDetailCtrl';
-
-    $http.get('/api/image/' + $routeParams.image_pk + '/').then(function (response) {
-        console.log(response);
-        $scope.album = response.data;
-    });
+    menuControl.show(['DeleteImage']);
+    $scope.image = image.data;
 }]);

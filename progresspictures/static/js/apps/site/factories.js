@@ -12,51 +12,44 @@ progressPicturesApp.factory('auth', ['$http', function ($http) {
 
 progressPicturesApp.factory('menuControl', [function () {
     var prototype = {},
-        uploadImage = false,
-        createAlbum = false,
-        deleteAlbum = false;
+        variables = {
+            'UploadImage': false,
+            'CreateAlbum': false,
+            'DeleteAlbum': false,
+            'DeleteImage': false
+        };
 
-    prototype.showUploadImage = function () {
-        uploadImage = true;
-        return true;
+    for (var key in variables) {
+        (function () {
+            var innerKey = key;
+            prototype['show' + innerKey] = function () {
+                variables[innerKey] = true;
+                return true;
+            }
+
+            prototype['hide' + innerKey] = function () {
+                variables[innerKey] = false;
+                return true;
+            }
+
+            prototype['get' + innerKey] = function () {
+                return variables[innerKey];
+            }
+        })();
+    }
+
+    prototype.show = function (keys) {
+        for (var variable_key in variables) {
+            if (keys.indexOf(variable_key) !== -1) {
+                prototype['show' + variable_key]();
+            }
+            else {
+                prototype['hide' + variable_key]();
+            }
+        }
     };
 
-    prototype.hideUploadImage = function () {
-        uploadImage = false;
-        return true;
-    }
-
-    prototype.getUploadImage = function () {
-        return uploadImage;
-    }
-
-    prototype.showCreateAlbum = function () {
-        createAlbum = true;
-        return true;
-    };
-
-    prototype.hideCreateAlbum = function () {
-        createAlbum = false;
-        return true;
-    }
-
-    prototype.getCreateAlbum = function () {
-        return createAlbum;
-    }
-
-    prototype.showDeleteAlbum = function () {
-        deleteAlbum = true;
-        return true;
-    };
-
-    prototype.hideDeleteAlbum = function () {
-        deleteAlbum = false;
-        return true;
-    }
-
-    prototype.getDeleteAlbum = function () {
-        return deleteAlbum;
-    }
+    prototype.variables = variables;
 
     return prototype;
 }]);

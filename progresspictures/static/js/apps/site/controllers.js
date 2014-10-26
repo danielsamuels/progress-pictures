@@ -1,8 +1,8 @@
 progressPicturesApp.controller('PageCtrl', ['$scope', 'albumFactory', 'menuControl', function ($scope, albumFactory, menuControl) {
     console.log('PageCtrl');
-    $scope.showUploadImage = false;
-    $scope.showCreateAlbum = false;
-    $scope.showDeleteAlbum = false;
+    for (var key in menuControl.variables) {
+        $scope['show' + key] = menuControl.variables[key];
+    }
 
     $scope.showAlbumCreateModel = function() {
         albumFactory.openCreateModal();
