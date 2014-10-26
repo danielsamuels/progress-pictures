@@ -46,13 +46,12 @@ progressPicturesApp.factory('albumFactory', ['$http', '$modal', function ($http,
     return prototype;
 }]);
 
-progressPicturesApp.factory('image', function ($resource) {
-    return {
-        images: $resource('/api/album/:albumID\\/', {}, {
-            list: {
-                method: 'GET'
-            },
-        })
-    };
-});
+progressPicturesApp.factory('imageFactory', ['$http', function ($http) {
+    var prototype = {};
 
+    prototype.detail = function (pk) {
+        return $http.get('/api/image/' + pk + '/');
+    }
+
+    return prototype;
+}]);

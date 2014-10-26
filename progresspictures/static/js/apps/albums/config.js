@@ -26,8 +26,14 @@ progressPicturesApp.config(['$routeProvider', function ($routeProvider) {
         })
 
         // Image detail
-        .when('/image/:image_pk/', {
+        .when('/album/:album_pk/image/:image_pk/', {
             templateUrl: '/static/partials/images/image_detail.html',
-            controller: 'ImageDetailCtrl'
+            controller: 'ImageDetailCtrl',
+            controllerAs: 'imagedetail',
+            resolve: {
+                image: ['$route', 'imageFactory', function ($route, imageFactory) {
+                    return imageFactory.detail($route.current.params.image_pk);
+                }]
+            }
         });
 }]);

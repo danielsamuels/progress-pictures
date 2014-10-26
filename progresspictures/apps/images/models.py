@@ -60,7 +60,7 @@ class Image(models.Model):
     )
 
     def get_absolute_url(self):
-        return '{}image/{}'.format(
+        return '{}image/{}/'.format(
             self.album.get_absolute_url(),
             self.pk
         )
