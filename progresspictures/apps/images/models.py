@@ -32,6 +32,9 @@ class Album(models.Model):
     def __unicode__(self):
         return self.title
 
+    class Meta:
+        ordering = ('-date_added', 'pk')
+
 
 class Image(models.Model):
 

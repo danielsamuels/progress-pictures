@@ -1,23 +1,60 @@
-progressPicturesApp.controller('AlbumListingCtrl', ['$scope', 'albumFactory', 'albums', function($scope, albumFactory, albums) {
+progressPicturesApp.controller('AlbumListingCtrl', ['$scope', 'albumFactory', 'menuControl', 'albums', function($scope, albumFactory, menuControl, albums) {
     console.log('AlbumListingCtrl');
-    $scope.albums = albums.data;
+    albumFactory.setAlbums(albums.data);
+    menuControl.showCreateAlbum();
+    menuControl.hideUploadImage();
+    menuControl.hideDeleteAlbum();
 
-    $scope.createAlbum = function() {
-        // Create returns a list() promise.
+    $scope.$watch(function() {
+        return albumFactory.getAlbums();
+    }, function (newVal) {
+        $scope.albums = newVal;
+    });
+}]);
+
+progressPicturesApp.controller('albumCreateModalCtrl', ['$scope', '$modalInstance', 'albumFactory', function ($scope, $modalInstance, albumFactory) {
+    $scope.albumTitle = 'test';
+
+    $scope.createAlbum = function () {
+        console.log('albumTitle', this.albumTitle);
+
         albumFactory.create({
-            'title': $scope.AlbumTitle,
-        }).success(function(data) {
-            console.log(data);
-            $scope.AlbumTitle = '';
-            $scope.albums = data;
+            'title': this.albumTitle,
+        }).success(function() {
+            albumFactory.list().success(function (data) {
+                console.log('settings albums', data);
+                $modalInstance.dismiss('cancel');
+                albumFactory.setAlbums(data);
+            });
         });
     };
 }]);
 
 
-progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'album', function($scope, $http, $routeParams, $upload, $modal, album) {
+progressPicturesApp.controller('albumDeleteModalCtrl', ['$scope', '$modalInstance', '$routeParams', '$location', 'albumFactory', function ($scope, $modalInstance, $routeParams, $location, albumFactory) {
+    console.log('albumDeleteModalCtrl');
+
+    $scope.confirm = function () {
+        albumFactory.delete($routeParams.pk).success(function () {
+            $modalInstance.dismiss('cancel');
+            $location.path('/albums/');
+        });
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    }
+}]);
+
+
+
+
+progressPicturesApp.controller('AlbumDetailCtrl', ['$scope', '$http', '$routeParams', '$upload', '$modal', 'menuControl', 'album', function($scope, $http, $routeParams, $upload, $modal, menuControl, album) {
     console.log('AlbumDetailCtrl');
     $scope.album = album.data;
+    menuControl.hideCreateAlbum();
+    menuControl.showUploadImage();
+    menuControl.showDeleteAlbum();
 
     $scope.onFileSelect = function($files) {
         for (var i = 0; i < $files.length; i++) {
